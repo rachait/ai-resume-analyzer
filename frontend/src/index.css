@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.scanline-track {
+  position: relative;
+  overflow: hidden;
+}
+
+.scanline-beam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #e8a23d, transparent);
+  box-shadow: 0 0 12px 2px rgba(232, 162, 61, 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-scan {
+    animation: none !important;
+  }
+}

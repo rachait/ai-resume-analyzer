@@ -3,27 +3,22 @@ backend/.venv/
 backend/__pycache__/
 **/__pycache__/
 *.pyc
-
-# Environment
-backend/.env
-frontend/.env
 .env
+backend/.env
 
 # Node
 frontend/node_modules/
 frontend/dist/
 
-# Uploads
-backend/uploads/
-backend/generated/
-
-# IDE
+# VS Code
 .vscode/
-.idea/
-
-# OS
-.DS_Store
-Thumbs.db
 
 # Logs
 *.log
+
+# Python cache
+.pytest_cache/
+
+# OS
+.DS_Store
+Thumbs.dbgo

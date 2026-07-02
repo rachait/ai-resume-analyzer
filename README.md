@@ -383,14 +383,6 @@ GitHub
 
 https://github.com/rachait
 
-LinkedIn
-
-(Add your LinkedIn)
-
-Portfolio
-
-(Add your Portfolio)
-
 ---
 
 # License

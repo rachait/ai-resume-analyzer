@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianGrid } from "recharts";
 import { runFullAnalysis, getReview } from "../services/api";
 import type { FullAnalysisResponse, ReviewResult } from "../types";
-import ScoreGauge from "../components/ScoreGauge";
+import ScoreGauge from "../components/dashboard/ScoreGauge";
 
 export default function DashboardPage() {
   const { sessionId } = useParams<{ sessionId: string }>();

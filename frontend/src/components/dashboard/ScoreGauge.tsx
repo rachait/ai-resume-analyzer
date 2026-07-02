@@ -1,45 +1,48 @@
+import { useEffect, useState } from "react";
+
 interface ScoreGaugeProps {
-  label: string;
-  score: number; // 0-100
+  score: number;
+  label?: string;
 }
 
-export default function ScoreGauge({ label, score }: ScoreGaugeProps) {
-  const radius = 42;
-  const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (score / 100) * circumference;
+const TICKS = [0, 25, 50, 75, 100];
 
-  const color = score >= 80 ? "#5FA88A" : score >= 60 ? "#E8A23D" : "#C8694C";
+export default function ScoreGauge({ score, label = "ATS MATCH" }: ScoreGaugeProps) {
+  const [displayScore, setDisplayScore] = useState(0);
+  const clamped = Math.max(0, Math.min(100, score));
+  const angle = -90 + (clamped / 100) * 180;
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setDisplayScore(clamped));
+    return () => cancelAnimationFrame(id);
+  }, [clamped]);
+
+  const color = clamped >= 70 ? "#2E9E76" : clamped >= 40 ? "#C9962F" : "#D9714B";
 
   return (
     <div className="flex flex-col items-center gap-2">
-      <svg width="110" height="110" viewBox="0 0 110 110">
-        <circle cx="55" cy="55" r={radius} fill="none" stroke="#1E4D54" strokeWidth="8" />
-        <circle
-          cx="55"
-          cy="55"
-          r={radius}
-          fill="none"
+      <svg viewBox="0 0 220 130" width="220" height="130">
+        <path d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke="#262A30" strokeWidth="1.5" />
+        {TICKS.map((t) => {
+          const a = (-90 + (t / 100) * 180) * (Math.PI / 180);
+          const x1 = 110 + 80 * Math.cos(a), y1 = 110 + 80 * Math.sin(a);
+          const x2 = 110 + 90 * Math.cos(a), y2 = 110 + 90 * Math.sin(a);
+          return <line key={t} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#8A877F" strokeWidth="1" />;
+        })}
+        <line
+          x1="110" y1="110"
+          x2={110 + 75 * Math.cos((angle * Math.PI) / 180)}
+          y2={110 + 75 * Math.sin((angle * Math.PI) / 180)}
           stroke={color}
-          strokeWidth="8"
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
-          strokeLinecap="round"
-          transform="rotate(-90 55 55)"
-          style={{ transition: "stroke-dashoffset 0.6s ease" }}
+          strokeWidth="2"
+          style={{ transition: "all 900ms cubic-bezier(0.22, 1, 0.36, 1)" }}
         />
-        <text
-          x="55"
-          y="60"
-          textAnchor="middle"
-          className="font-mono"
-          fontSize="22"
-          fill="#FAF8F4"
-          fontWeight="600"
-        >
-          {Math.round(score)}
-        </text>
+        <circle cx="110" cy="110" r="4" fill="#F2EFE8" />
       </svg>
-      <p className="font-mono text-xs uppercase tracking-wider text-paper-100/60 text-center">{label}</p>
+      <div className="font-mono text-3xl font-medium leading-none" style={{ color }}>
+        {Math.round(displayScore)}
+      </div>
+      <div className="font-mono text-xs tracking-widest text-mute">{label}</div>
     </div>
   );
 }
